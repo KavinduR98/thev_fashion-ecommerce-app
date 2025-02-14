@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { Routes, Route } from "react-router-dom";
@@ -6,17 +6,24 @@ import Add from './pages/Add'
 import List from './pages/List'
 import Orders from './pages/Orders'
 import Login from "./components/Login";
+import { ToastContainer } from 'react-toastify';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const App = () => {
 
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):'');
+
+  // whenever token will be updated, then execute the function and store token into local-storage
+  useEffect(() => {
+    localStorage.setItem('token', token)
+  }, [token])
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <ToastContainer />
       {token === ""
-        ? <Login />
+        ? <Login setToken={setToken} />
         : <>
           <Navbar />
           <hr />

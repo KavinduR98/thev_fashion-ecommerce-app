@@ -26,6 +26,18 @@ const Orders = ({ token }) => {
     }
   }
 
+  const statusHandler = async (event, orderId) => {
+    try {
+      const response = await axio.post(backendUrl + '/api/order/status', { orderId, status: event.target.value }, { headers: { token } })
+      if (response.data.success) {
+        await fetchAllOrders()
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  }
+
   useEffect(() => {
     fetchAllOrders()
   }, [token])
@@ -58,13 +70,13 @@ const Orders = ({ token }) => {
                 <p>{order.address.phone}</p>
               </div>
               <div>
-                  <p className='text-sm sm:text-[15px]'>Items : {order.items.length}</p>
-                  <p className='mt-3'>Method : {order.paymentMethod}</p>
-                  <p>Payment : {order.payment ? 'Done' : 'Pending'}</p>
-                  <p>Date : {new Date(order.date).toLocaleDateString()}</p>
+                <p className='text-sm sm:text-[15px]'>Items : {order.items.length}</p>
+                <p className='mt-3'>Method : {order.paymentMethod}</p>
+                <p>Payment : {order.payment ? 'Done' : 'Pending'}</p>
+                <p>Date : {new Date(order.date).toLocaleDateString()}</p>
               </div>
               <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>
-              <select value={order.status} className='p-2 font-semibold'>
+              <select onChange={(event) => statusHandler(event, order._id)} value={order.status} className='p-2 font-semibold'>
                 <option value="OrderPlaced">OrderPlaced</option>
                 <option value="Packing">Packing</option>
                 <option value="Shipped">Shipped</option>

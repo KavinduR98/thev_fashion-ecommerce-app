@@ -89,7 +89,7 @@ const ShopContextProvider = ({ children }) => {
             let itemInfo = products.find((product) => product._id === items);
             for (const item in cartItems[items]) {
                 try {
-                    console.log(cartItems[items][item]);
+                    // console.log(cartItems[items][item]);
 
                     if (cartItems[items][item] > 0) {
                         totalAmount += itemInfo.price * cartItems[items][item]
@@ -143,7 +143,7 @@ const ShopContextProvider = ({ children }) => {
     const value = {
         products, currency, delivery_fee,
         search, setSearch, showSearch, setShowSearch,
-        cartItems, addToCart,
+        cartItems, addToCart, setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
         token, setToken
